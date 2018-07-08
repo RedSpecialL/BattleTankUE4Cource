@@ -11,10 +11,15 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UTankAimingComponent::AimAt(const FVector& AimLocation) const
+void UTankAimingComponent::AimAt(const FVector& AimLocation, float LaunchSpeed) const
 {
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s is aiming at: %s"), *GetOwner()->GetName(), *AimLocation.ToString());
+	FVector BarrelLocation = Barrel->GetComponentLocation();
+	UE_LOG(
+		LogTemp, Warning,
+		TEXT("%s is aiming at: %s from: %s"),
+		*GetOwner()->GetName(),
+		*AimLocation.ToString(),
+		*Barrel->GetComponentLocation().ToString());
 }
 
 // Called when the game starts
@@ -26,6 +31,10 @@ void UTankAimingComponent::BeginPlay()
 	
 }
 
+void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet)
+{
+	Barrel = BarrelToSet;
+}
 
 // Called every frame
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
