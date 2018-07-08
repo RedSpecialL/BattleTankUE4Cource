@@ -13,13 +13,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(const FVector& AimLocation, float LaunchSpeed) const
 {
-	FVector BarrelLocation = Barrel->GetComponentLocation();
-	UE_LOG(
-		LogTemp, Warning,
-		TEXT("%s is aiming at: %s from: %s"),
-		*GetOwner()->GetName(),
-		*AimLocation.ToString(),
-		*Barrel->GetComponentLocation().ToString());
+
 }
 
 // Called when the game starts
