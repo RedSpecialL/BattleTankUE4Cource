@@ -32,5 +32,5 @@ private:
 	UPROPERTY(EditAnywhere)
 	FVector2D CrossHairPosition;
 	UPROPERTY(EditAnywhere)
-	float ShotRange;
+	float LineTraceRange;
 };

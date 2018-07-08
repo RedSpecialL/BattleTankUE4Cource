@@ -7,7 +7,7 @@
 ATankPlayerController::ATankPlayerController()
 	: APlayerController()
 	, CrossHairPosition(0.5f, 0.33333f)
-	, ShotRange(1000000.0f)
+	, LineTraceRange(1000000.0f)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -23,7 +23,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
 		// TODO: Tell controlled tank to aim at this point
 	}
 }
@@ -58,30 +58,24 @@ bool ATankPlayerController::GetLookDirection(const FVector2D& ScreenLocation, FV
 		LookDirection);
 }
 
-bool ATankPlayerController::GetLookVectorHitLocation(const FVector& LookDirection, FHitResult& HitResult) const
+bool ATankPlayerController::GetLookVectorHitLocation(
+	const FVector& LookDirection, FHitResult& HitResult) const
 {
-	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-	
 	FTwoVectors TraceLine = GetReachLineEnds(LookDirection);
 	return GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		TraceLine.v1,
 		TraceLine.v2,
-		ECollisionChannel::ECC_Visibility,
-		TraceParameters
+		ECollisionChannel::ECC_Visibility
 	);
 }
 
 FTwoVectors ATankPlayerController::GetReachLineEnds(const FVector& LookDirection) const
 {
-	FVector PlayerViewPointLocation;
-	FRotator PlayerViewPointRatation;
+	FVector StartLocation = PlayerCameraManager->GetCameraLocation();
+	FVector LineEnd = StartLocation + LookDirection * LineTraceRange;
 
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
-		PlayerViewPointLocation, PlayerViewPointRatation);
-
-	FVector LineEnd = PlayerViewPointLocation + LookDirection * ShotRange;
-	return FTwoVectors(PlayerViewPointLocation, LineEnd);
+	return FTwoVectors(StartLocation, LineEnd);
 }
 
 
@@ -101,13 +95,13 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 		FHitResult HitResult;
 		if (GetLookVectorHitLocation(LookDirection, HitResult))
 		{
-			FVector HitLocation = HitResult.GetActor()->GetActorLocation();
-			UE_LOG(LogTemp, Warning, TEXT("Screen to world direction: %s"), *HitLocation.ToString())
+			HitLocation = HitResult.Location;
+			return true;
 		}
 	}
 
 	// Line trace along that look direction, and see what we hit (up to max range)
-	return true;
+	return false;
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
