@@ -2,13 +2,14 @@
 
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TankBarrel.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UTankAimingComponent::AimAt(const FVector& AimLocation, float LaunchSpeed) const
@@ -27,17 +28,12 @@ void UTankAimingComponent::AimAt(const FVector& AimLocation, float LaunchSpeed) 
 		StartLocation,
 		AimLocation,
 		LaunchSpeed,
-		false,
-		0.0f,
-		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	))
 	{
 		FVector AimDirection = LaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("Aim direction: %s"), *AimDirection.ToString())
+		MoveBarrel(AimDirection);
 	}
-
-
 }
 
 // Called when the game starts
@@ -49,7 +45,19 @@ void UTankAimingComponent::BeginPlay()
 	
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet)
+void UTankAimingComponent::MoveBarrel(const FVector& AimDirection) const
+{
+	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
+	FRotator AimAsRotator = AimDirection.Rotation();
+	FRotator Diff = AimAsRotator - BarrelRotator;
+
+	// TODO: remove magic number.
+	Barrel->Elevate(5.0f);
+
+
+}
+
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
