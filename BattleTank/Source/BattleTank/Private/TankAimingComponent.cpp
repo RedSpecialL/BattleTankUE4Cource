@@ -54,10 +54,7 @@ void UTankAimingComponent::MoveBarrel(const FVector& AimDirection) const
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator Diff = AimAsRotator - BarrelRotator;
 
-	// TODO: remove magic number.
-	Barrel->Elevate(5.0f);
-
-
+	Barrel->Elevate(Diff.Pitch);
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
