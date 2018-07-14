@@ -29,8 +29,8 @@ private:
 	FTwoVectors GetReachLineEnds(const FVector& WorldDirection) const;
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	FVector2D CrossHairPosition;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float LineTraceRange;
 };
