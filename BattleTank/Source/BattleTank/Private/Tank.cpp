@@ -29,10 +29,12 @@ void ATank::BeginPlay()
 
 void ATank::Fire()
 {
-	if (Barrel == nullptr)
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
+	if (Barrel == nullptr || !isReloaded)
 	{
 		return;
 	}
+
 
 	FVector SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	FRotator SpawnRotation = Barrel->GetSocketRotation(FName("Projectile"));
@@ -42,6 +44,7 @@ void ATank::Fire()
 	if (Projectile != nullptr)
 	{
 		Projectile->Launch(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
 	}
 
 }
