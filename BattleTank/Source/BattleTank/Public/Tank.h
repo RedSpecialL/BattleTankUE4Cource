@@ -45,7 +45,7 @@ public:
 	float LaunchSpeed = 10000; // TODO: Find sensible default.
 
 	UPROPERTY(EditAnywhere, Category = Setup)
-	TSubclassOf<AProjectile> Projectile;
+	TSubclassOf<AProjectile> ProjectileBP;
 
 	UTankBarrel* Barrel = nullptr;
 };

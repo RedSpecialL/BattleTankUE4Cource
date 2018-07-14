@@ -35,8 +35,15 @@ void ATank::Fire()
 	}
 
 	FVector SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	UE_LOG(LogTemp, Warning, TEXT("Spawn location: %s"), *SpawnLocation.ToString());
-	GetWorld()->SpawnActor<AProjectile>(Projectile, SpawnLocation, FRotator(0.0f, 0.0f, 0.0f));
+	FRotator SpawnRotation = Barrel->GetSocketRotation(FName("Projectile"));
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileBP, SpawnLocation, SpawnRotation);
+	
+	if (Projectile != nullptr)
+	{
+		Projectile->Launch(LaunchSpeed);
+	}
+
 }
 
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
