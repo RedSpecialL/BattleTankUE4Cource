@@ -20,11 +20,17 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
 
-	// TODO Prevent double speed due to dual contorl use.
+	// TODO Prevent double speed due to dual control use.
 }
 
 void UTankMovementComponent::IntendRotate(float Throw)
 {
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
+}
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+	FString Name = GetOwner()->GetName();
+	UE_LOG(LogTemp, Warning, TEXT("%s velosity: %s"), *Name, *MoveVelocity.GetSafeNormal().ToString());
 }
