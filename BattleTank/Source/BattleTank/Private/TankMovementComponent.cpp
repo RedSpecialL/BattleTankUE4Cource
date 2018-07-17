@@ -17,11 +17,14 @@ void UTankMovementComponent::Initialize(UTankTrack* Left, UTankTrack* Right)
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
-	float Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f: Intent move forward throw: %f"), Time, Throw)
-
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
 
 	// TODO Prevent double speed due to dual contorl use.
+}
+
+void UTankMovementComponent::IntendRotate(float Throw)
+{
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(-Throw);
 }
