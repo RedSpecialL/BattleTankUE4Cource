@@ -22,6 +22,6 @@ void ATankAIController::Tick(float DeltaTime)
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 	
 		// Fire if ready.
-		ControlledTank->Fire(); // TODO: limit fire limit
+		//ControlledTank->Fire(); // TODO: limit fire limit
 	}
 }
