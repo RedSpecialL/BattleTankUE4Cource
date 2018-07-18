@@ -27,8 +27,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Movement)
 	void IntendRotate(float Throw);
 
+private:
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
-
 
 private:
 	UTankTrack* LeftTrack = nullptr;

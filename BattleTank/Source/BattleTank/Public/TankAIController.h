@@ -21,5 +21,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	float AcceptanceRadius = 300.0f;
+	float AcceptanceRadius = 3000.0f;
 };
