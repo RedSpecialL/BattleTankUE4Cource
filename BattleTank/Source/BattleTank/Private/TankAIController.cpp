@@ -22,9 +22,10 @@ void ATankAIController::Tick(float DeltaTime)
 
 	// Move towards the player.
 	MoveToActor(PlayerTank, AcceptanceRadius);
+	UTankAimingComponent* AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 	// Aim at the player.
-	ControlledTank->FindComponentByClass<UTankAimingComponent>()->AimAt(PlayerTank->GetActorLocation());
+	AimingComponent->AimAt(PlayerTank->GetActorLocation());
 	
 	// Fire if ready.
-	//ControlledTank->Fire(); // TODO: limit fire limit
+	AimingComponent->Fire(); // TODO: limit fire limit
 }

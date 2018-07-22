@@ -18,28 +18,3 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 }
-
-void ATank::Fire()
-{
-	if (ensure(Barrel == nullptr))
-	{
-		return;
-	}
-
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (!isReloaded)
-	{
-		return;
-	}
-
-	FVector SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	FRotator SpawnRotation = Barrel->GetSocketRotation(FName("Projectile"));
-	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
-		ProjectileBP, SpawnLocation, SpawnRotation);
-	
-	if (Projectile != nullptr)
-	{
-		Projectile->Launch(LaunchSpeed);
-		LastFireTime = FPlatformTime::Seconds();
-	}
-}

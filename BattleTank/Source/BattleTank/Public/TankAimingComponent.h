@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+class AProjectile;
 class UTankBarrel;
 class UTankTurret;
 
@@ -37,20 +38,29 @@ public:
 
 	// TODO SetTurretReference
 
+	UFUNCTION(BlueprintCallable, Category = Firing)
+	void Fire();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	UPROPERTY(BlueprintReadOnly, Category = State)
 	EState State = EState::Reloading;
 
-public:
-	UTankBarrel* Barrel = nullptr;
-	UTankTurret* Turret = nullptr;
-
 private:
 	void MoveBarrel(const FVector& AimDirection) const;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 10000; // TODO: Find sensible default.
+	float LaunchSpeed = 8000;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBP;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTime = 3.0f;
+
+	double LastFireTime = 0.0f;
+	UTankBarrel* Barrel = nullptr;
+	UTankTurret* Turret = nullptr;
 };
