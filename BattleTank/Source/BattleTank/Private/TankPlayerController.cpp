@@ -15,16 +15,14 @@ ATankPlayerController::ATankPlayerController()
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (GetControlledTank() == nullptr)
+	if (ensure(GetControlledTank() != nullptr))
 	{
-		return;
-	}
+		FVector HitLocation{ 0, 0, 0 };
 
-	FVector HitLocation{ 0, 0, 0 };
-
-	if (GetSightRayHitLocation(HitLocation))
-	{
-		GetControlledTank()->AimAt(HitLocation);
+		if (GetSightRayHitLocation(HitLocation))
+		{
+			GetControlledTank()->AimAt(HitLocation);
+		}
 	}
 }
 

@@ -5,26 +5,34 @@
 
 void UTankMovementComponent::Initialize(UTankTrack* Left, UTankTrack* Right)
 {
-	if (Left == nullptr || Right == nullptr)
+	if (ensure(Left != nullptr && Right != nullptr))
 	{
-		UE_LOG(LogTemp, Error, TEXT("No track to set!!!"))
+		LeftTrack = Left;
+		RightTrack = Right;
 		return;
 	}
-
-	LeftTrack = Left;
-	RightTrack = Right;
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No track to set!!!"))
+	}
 }
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
-	LeftTrack->SetThrottle(Throw);
-	RightTrack->SetThrottle(Throw);
+	if (ensure(LeftTrack && RightTrack))
+	{
+		LeftTrack->SetThrottle(Throw);
+		RightTrack->SetThrottle(Throw);
+	}
 }
 
 void UTankMovementComponent::IntendRotate(float Throw)
 {
-	LeftTrack->SetThrottle(Throw);
-	RightTrack->SetThrottle(-Throw);
+	if (ensure(LeftTrack && RightTrack))
+	{
+		LeftTrack->SetThrottle(Throw);
+		RightTrack->SetThrottle(-Throw);
+	}
 }
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)

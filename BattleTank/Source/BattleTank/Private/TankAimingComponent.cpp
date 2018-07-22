@@ -15,7 +15,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(const FVector& AimLocation, float LaunchSpeed) const
 {
-	if (Barrel == nullptr)
+	if (ensure(Barrel == nullptr))
 	{
 		return;
 	}
@@ -51,6 +51,10 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::MoveBarrel(const FVector& AimDirection) const
 {
+	if (ensure(Barrel == nullptr) || ensure(Turret == nullptr))
+	{
+		return;
+	}
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator Diff = AimAsRotator - BarrelRotator;
@@ -61,8 +65,11 @@ void UTankAimingComponent::MoveBarrel(const FVector& AimDirection) const
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-	Barrel = BarrelToSet;
-	Turret = TurretToSet;
+	if (ensure(BarrelToSet != nullptr) || ensure(TurretToSet != nullptr))
+	{
+		Barrel = BarrelToSet;
+		Turret = TurretToSet;
+	}
 }
 
 // Called every frame
