@@ -6,8 +6,11 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
+class ATank;
+class UTankAimingComponent;
+
 /**
- * 
+ * Responsible for tank control.
  */
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
@@ -23,7 +26,9 @@ public:
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	class ATank* GetControlledTank() const;
+	ATank* GetControlledTank() const;
+	UFUNCTION(BlueprintImplementableEvent, Category = Setup)
+	void FoundAimingComponent(UTankAimingComponent* TankAimingComponent);
 
 private:
 	void AimTowardsCrosshair();

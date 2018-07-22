@@ -3,6 +3,7 @@
 #include "TankPlayerController.h"
 #include "Tank.h"
 #include "CollisionQueryParams.h"
+#include "TankAimingComponent.h"
 
 ATankPlayerController::ATankPlayerController()
 	: APlayerController()
@@ -38,6 +39,16 @@ void ATankPlayerController::BeginPlay()
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player controller possesing %s"), *MyTank->GetName())
+	}
+
+	UTankAimingComponent* AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (AimingComponent != nullptr)
+	{
+		FoundAimingComponent(AimingComponent);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player controller can't find aiming component at begin play"));
 	}
 }
 
