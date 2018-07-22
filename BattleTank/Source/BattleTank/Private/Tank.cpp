@@ -3,7 +3,6 @@
 #include "Tank.h"
 
 #include "Projectile.h"
-#include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
 
@@ -14,19 +13,10 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void ATank::AimAt(const FVector& HitLocation) const
-{
-	if (ensure(TankAimingComponent != nullptr))
-	{
-		TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-	}
-}
-
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATank::Fire()

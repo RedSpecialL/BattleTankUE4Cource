@@ -30,7 +30,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
-	void AimAt(const FVector& AimLocation, float LaunchSpeed) const;
+	void AimAt(const FVector& AimLocation) const;
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -51,4 +51,6 @@ private:
 	void MoveBarrel(const FVector& AimDirection) const;
 	
 private:
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 10000; // TODO: Find sensible default.
 };

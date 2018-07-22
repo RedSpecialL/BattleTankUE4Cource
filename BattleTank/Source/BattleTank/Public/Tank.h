@@ -6,7 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTankAimingComponent;
 class UTankBarrel;
 class UTankTurret;
 class AProjectile;
@@ -21,18 +20,15 @@ public:
 	ATank();
 
 public:
-	void AimAt(const FVector& HitLocaiton) const;
-
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent;
+
 public:
-	//TODO : Remomve once firing is moved to aiming component
+	//TODO : Remove once firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 10000; // TODO: Find sensible default.
 
