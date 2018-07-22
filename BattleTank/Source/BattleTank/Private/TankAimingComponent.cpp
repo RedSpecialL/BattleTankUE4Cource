@@ -15,28 +15,26 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(const FVector& AimLocation, float LaunchSpeed) const
 {
-	if (ensure(Barrel == nullptr))
+	if (ensure(Barrel != nullptr))
 	{
-		return;
-	}
+		FVector LaunchVelocity;
+		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
-	FVector LaunchVelocity;
-	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-
-	if (UGameplayStatics::SuggestProjectileVelocity(
-		this,
-		LaunchVelocity,
-		StartLocation,
-		AimLocation,
-		LaunchSpeed,
-		false,
-		0.0f,
-		0.0f,
-		ESuggestProjVelocityTraceOption::DoNotTrace
-	))
-	{
-		FVector AimDirection = LaunchVelocity.GetSafeNormal();
-		MoveBarrel(AimDirection);
+		if (UGameplayStatics::SuggestProjectileVelocity(
+			this,
+			LaunchVelocity,
+			StartLocation,
+			AimLocation,
+			LaunchSpeed,
+			false,
+			0.0f,
+			0.0f,
+			ESuggestProjVelocityTraceOption::DoNotTrace
+		))
+		{
+			FVector AimDirection = LaunchVelocity.GetSafeNormal();
+			MoveBarrel(AimDirection);
+		}
 	}
 }
 
@@ -51,10 +49,11 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::MoveBarrel(const FVector& AimDirection) const
 {
-	if (ensure(Barrel == nullptr) || ensure(Turret == nullptr))
+	if (!ensure(Barrel) || !ensure(Turret))
 	{
 		return;
 	}
+
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator Diff = AimAsRotator - BarrelRotator;

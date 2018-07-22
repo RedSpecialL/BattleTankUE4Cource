@@ -7,7 +7,6 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
-class UTankMovementComponent;
 class UTankBarrel;
 class UTankTurret;
 class AProjectile;
@@ -32,9 +31,8 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent* TankAimingComponent;
-	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovementComponent;
-public:	
+public:
+	//TODO : Remomve once firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 10000; // TODO: Find sensible default.
 
