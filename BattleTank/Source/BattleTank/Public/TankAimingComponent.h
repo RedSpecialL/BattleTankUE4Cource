@@ -31,7 +31,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
-	void AimAt(const FVector& AimLocation) const;
+	void AimAt(const FVector& AimLocation);
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -49,7 +49,8 @@ protected:
 
 private:
 	void MoveBarrel(const FVector& AimDirection) const;
-	
+	bool IsBarrelMoving() const;
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 8000;
@@ -63,4 +64,6 @@ private:
 	double LastFireTime = 0.0f;
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
+
+	FVector AimDirection;
 };
