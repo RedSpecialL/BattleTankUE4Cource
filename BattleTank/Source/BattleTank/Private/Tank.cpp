@@ -13,30 +13,33 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+	UE_LOG(LogTemp, Warning, TEXT("DBG: %s constructor"), *GetName())
 
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+
 }
 
 void ATank::AimAt(const FVector& HitLocation) const
 {
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
+	if (TankAimingComponent)
+	{
+		TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
+	}
 }
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	UE_LOG(LogTemp, Warning, TEXT("DBG: %s begin play"), *GetName())
 }
 
 void ATank::Fire()
 {
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (Barrel == nullptr || !isReloaded)
+	if (!Barrel || !isReloaded)
 	{
 		return;
 	}
-
 
 	FVector SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	FRotator SpawnRotation = Barrel->GetSocketRotation(FName("Projectile"));
@@ -48,22 +51,4 @@ void ATank::Fire()
 		Projectile->Launch(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
 	}
-}
-
-void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-	TankAimingComponent->SetBarrelReference(BarrelToSet);
-	Barrel = BarrelToSet;
-}
-
-void ATank::SetTurretReference(UTankTurret* TurretToSet)
-{
-	TankAimingComponent->SetTurretReference(TurretToSet);
-}
-
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }

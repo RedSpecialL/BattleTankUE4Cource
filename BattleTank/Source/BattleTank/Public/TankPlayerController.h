@@ -19,8 +19,11 @@ public:
 
 public:
 	virtual void BeginPlay() override;
-	class ATank* GetControlledTank() const;
 	virtual void Tick(float DeltaSeconds) override;
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	class ATank* GetControlledTank() const;
 
 private:
 	void AimTowardsCrosshair();
@@ -28,6 +31,7 @@ private:
 	bool GetLookVectorHitLocation(const FVector& LookDirection, FHitResult& HitResult) const;
 	FTwoVectors GetReachLineEnds(const FVector& WorldDirection) const;
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D CrossHairPosition;
