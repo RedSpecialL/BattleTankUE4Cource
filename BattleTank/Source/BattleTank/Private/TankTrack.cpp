@@ -4,14 +4,32 @@
 
 UTankTrack::UTankTrack()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
+}
+
+void UTankTrack::BeginPlay()
+{
+	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+}
+
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	// Drive the tracks
+	DriveTrack();
+	ApplySidewaysForce();
+	
+	CurrentThrottle = 0.0f;
 }
 
 void UTankTrack::SetThrottle(float Throttle)
 {
 	// TODO: clamp throttle value.
-	
-	FVector ForceToApply = GetForwardVector() * Throttle * MaxDrivingForce;
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1.0f, 1.0f);
+}
+
+void UTankTrack::DriveTrack()
+{
+	FVector ForceToApply = GetForwardVector() * CurrentThrottle * MaxDrivingForce;
 	FVector ForceLocation = GetComponentLocation();
 	UPrimitiveComponent* TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	TankRoot->AddForceAtLocation(ForceToApply, ForceLocation);
@@ -20,11 +38,19 @@ void UTankTrack::SetThrottle(float Throttle)
 void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	FVector RightVector = GetRightVector();
-	RightVector.Z = 0;
-	float SlippageSpeed = FVector::DotProduct(RightVector, GetComponentVelocity());
-	FVector CorrectionAcceleration = -SlippageSpeed / DeltaTime * RightVector;
-	UStaticMeshComponent* TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
-	FVector CorrectionForce = (TankRoot->GetMass() * CorrectionAcceleration) / 2; // Two tracks.
-	TankRoot->AddForce(CorrectionForce);
-} 
+}
+void UTankTrack::ApplySidewaysForce()
+{
+	if (!GetComponentVelocity().Equals(FVector(0.0f), 0.1f))
+	{
+		FVector RightVector = GetRightVector();
+		RightVector.Z = 0;
+		float DeltaTime = GetWorld()->GetDeltaSeconds();
+		float SlippageSpeed = FVector::DotProduct(RightVector, GetComponentVelocity());
+		FVector CorrectionAcceleration = -SlippageSpeed / DeltaTime * RightVector;
+		UStaticMeshComponent* TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
+		FVector CorrectionForce = (TankRoot->GetMass() * CorrectionAcceleration) / 2; // Two tracks.
+		TankRoot->AddForce(CorrectionForce);
+	}
+}
+
