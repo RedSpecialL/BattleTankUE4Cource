@@ -41,6 +41,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
 
+	EState GetState() const;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

@@ -70,6 +70,11 @@ void UTankAimingComponent::Fire()
 	}
 }
 
+EState UTankAimingComponent::GetState() const
+{
+	return State;
+}
+
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
 	if (ensure(BarrelToSet != nullptr) || ensure(TurretToSet != nullptr))
