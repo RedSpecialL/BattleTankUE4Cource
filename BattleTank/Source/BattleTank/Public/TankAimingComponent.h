@@ -53,7 +53,7 @@ private:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 8000;
+	float LaunchSpeed = 12000;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBP;
