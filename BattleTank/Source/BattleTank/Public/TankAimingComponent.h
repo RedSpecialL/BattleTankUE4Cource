@@ -15,7 +15,8 @@ enum class EState : uint8
 {
 	Ready,
 	Aiming,
-	Reloading
+	Reloading,
+	OutOfAmmo
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -40,8 +41,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
-
+	UFUNCTION(BlueprintCallable, Category = Firing)
+	int GetCurrentAmmo() const;
+	
 	EState GetState() const;
+
 
 protected:
 	// Called when the game starts
@@ -52,6 +56,7 @@ protected:
 private:
 	void MoveBarrel(const FVector& AimDirection) const;
 	bool IsBarrelMoving() const;
+	bool HasAmmo() const;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
@@ -68,4 +73,6 @@ private:
 	UTankTurret* Turret = nullptr;
 
 	FVector AimDirection;
+
+	int CurrentAmmo = 3;
 };

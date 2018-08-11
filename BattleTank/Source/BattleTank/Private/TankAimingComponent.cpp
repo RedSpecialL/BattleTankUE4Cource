@@ -55,7 +55,7 @@ void UTankAimingComponent::Fire()
 		return;
 	}
 
-	if (State != EState::Reloading)
+	if (State != EState::Reloading && HasAmmo())
 	{
 		FVector SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
 		FRotator SpawnRotation = Barrel->GetSocketRotation(FName("Projectile"));
@@ -66,13 +66,24 @@ void UTankAimingComponent::Fire()
 		{
 			Projectile->Launch(LaunchSpeed);
 			LastFireTime = FPlatformTime::Seconds();
+			CurrentAmmo--;
 		}
 	}
+}
+
+int UTankAimingComponent::GetCurrentAmmo() const
+{
+	return CurrentAmmo;
 }
 
 EState UTankAimingComponent::GetState() const
 {
 	return State;
+}
+
+bool UTankAimingComponent::HasAmmo() const
+{
+	return CurrentAmmo > 0;
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
@@ -116,7 +127,12 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTime)
+
+	if (!HasAmmo())
+	{
+		State = EState::OutOfAmmo;
+	}
+	else if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTime)
 	{
 		State = EState::Reloading;
 	}
