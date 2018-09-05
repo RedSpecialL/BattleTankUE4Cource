@@ -71,7 +71,7 @@ void UTankAimingComponent::Fire()
 	}
 }
 
-int UTankAimingComponent::GetCurrentAmmo() const
+int32 UTankAimingComponent::GetCurrentAmmo() const
 {
 	return CurrentAmmo;
 }

@@ -42,7 +42,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
 	UFUNCTION(BlueprintCallable, Category = Firing)
-	int GetCurrentAmmo() const;
+	int32 GetCurrentAmmo() const;
 	
 	EState GetState() const;
 
@@ -74,5 +74,6 @@ private:
 
 	FVector AimDirection;
 
-	int CurrentAmmo = 3;
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	int32 CurrentAmmo = 3;
 };
