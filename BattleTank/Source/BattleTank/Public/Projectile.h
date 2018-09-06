@@ -26,6 +26,11 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+
+private:
 	UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = Projectile)
@@ -33,4 +38,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Projectile)
 	UParticleSystemComponent* LaunchBlast = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = Projectile)
+	UParticleSystemComponent* ImpactBlast = nullptr;
 };
