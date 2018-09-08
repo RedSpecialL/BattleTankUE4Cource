@@ -30,6 +30,7 @@ private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
+	void OnTimerExpire();
 
 private:
 	UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
@@ -45,4 +46,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Projectile)
 	URadialForceComponent* ExplosionForce = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	float DestroyDelay = 2.0f;
 };
