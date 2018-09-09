@@ -20,6 +20,11 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 }
 
+float ATank::GetHealthPercent() const
+{
+	return static_cast<float>(CurrentHealth) / static_cast<float>(StartingHealth);
+}
+
 float ATank::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent,
 	AController* EventInstigator, AActor* DamageCauser)
 {

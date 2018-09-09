@@ -15,6 +15,11 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
+public:
+	// Returns current health as a percentage of starting health between 0 and 1.
+	UFUNCTION(BlueprintPure, Category = Health)
+	float GetHealthPercent() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
