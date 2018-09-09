@@ -34,6 +34,11 @@ private:
 	FTwoVectors GetReachLineEnds(const FVector& WorldDirection) const;
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
 
+	UFUNCTION()
+	void OnTankDeath();
+
+	virtual void SetPawn(APawn* InPawn) override;
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D CrossHairPosition;

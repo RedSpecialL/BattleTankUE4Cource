@@ -3,6 +3,8 @@
 #include "TankPlayerController.h"
 #include "CollisionQueryParams.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
+
 
 ATankPlayerController::ATankPlayerController()
 	: APlayerController()
@@ -104,4 +106,27 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	AimTowardsCrosshair();
+}
+
+void ATankPlayerController::OnTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("GOT TANK DEATH EVENT"));
+	StartSpectatingOnly();
+}
+
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn != nullptr)
+	{
+		auto PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank))
+		{
+			return;
+		}
+
+		// Subscribe to the tank's death event.
+		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
+	}
 }
