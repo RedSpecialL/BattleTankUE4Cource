@@ -110,7 +110,6 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 
 void ATankPlayerController::OnTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("GOT TANK DEATH EVENT"));
 	StartSpectatingOnly();
 }
 

@@ -36,8 +36,6 @@ void ATankAIController::Tick(float DeltaTime)
 
 void ATankAIController::OnTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("GOT TANK DEATH EVENT"));
-	
 	if (!GetPawn())
 	{
 		return;
